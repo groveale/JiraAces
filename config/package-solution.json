@@ -1,0 +1,40 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "jira-aces-client-side-solution",
+    "id": "d04f64cb-96bb-40c0-bc74-2a19cdfd644a",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true,
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "developer": {
+      "name": "",
+      "websiteUrl": "",
+      "privacyUrl": "",
+      "termsOfUseUrl": "",
+      "mpnId": "Undefined-1.15.2"
+    },
+    "metadata": {
+      "shortDescription": {
+        "default": "JiraAces description"
+      },
+      "longDescription": {
+        "default": "JiraAces description"
+      },
+      "screenshotPaths": [],
+      "videoUrl": "",
+      "categories": []
+    },
+    "features": [
+      {
+        "title": "jira-aces Feature",
+        "description": "The feature that activates elements of the jira-aces solution.",
+        "id": "5d8be83c-209c-4e06-a470-66917dd29d5f",
+        "version": "1.0.0.0"
+      }
+    ]
+  },
+  "paths": {
+    "zippedPackage": "solution/jira-aces.sppkg"
+  }
+}
