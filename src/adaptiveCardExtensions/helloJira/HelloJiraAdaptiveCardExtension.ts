@@ -3,7 +3,7 @@ import { BaseAdaptiveCardExtension } from '@microsoft/sp-adaptive-card-extension
 import { CardView } from './cardView/CardView';
 import { QuickView } from './quickView/QuickView';
 import { HelloJiraPropertyPane } from './HelloJiraPropertyPane';
-import { HttpClient, HttpClientResponse } from '@microsoft/sp-http';
+import { HttpClient, HttpClientResponse, AadHttpClient, IHttpClientOptions } from '@microsoft/sp-http';
 
 export interface IHelloJiraAdaptiveCardExtensionProps {
   title: string;
@@ -21,6 +21,7 @@ export default class HelloJiraAdaptiveCardExtension extends BaseAdaptiveCardExte
   IHelloJiraAdaptiveCardExtensionState
 > {
   private _deferredPropertyPane: HelloJiraPropertyPane | undefined;
+  private jiraClient: AadHttpClient;
 
   public onInit(): Promise<void> {
     this.state = { 
@@ -34,9 +35,7 @@ export default class HelloJiraAdaptiveCardExtension extends BaseAdaptiveCardExte
     this.cardNavigator.register(CARD_VIEW_REGISTRY_ID, () => new CardView());
     this.quickViewNavigator.register(QUICK_VIEW_REGISTRY_ID, () => new QuickView());
 
-    this._getIssuesFromJira();
-
-    return Promise.resolve();
+    return this._getIssuesFromJira();
   }
 
   protected loadPropertyPaneResources(): Promise<void> {
@@ -60,24 +59,29 @@ export default class HelloJiraAdaptiveCardExtension extends BaseAdaptiveCardExte
   }
 
   private _getIssuesFromJira(): Promise<void> {
-      return this.context.httpClient
-      .get(`https://groverale.atlassian.net/rest/api/3/search`,
-      HttpClient.configurations.v1,
-      {
-        headers: [
-          // base 64 of username and api token - not great for prod 
-          // Need a way of authenticating with JIRA
-          ['Authorization', 'Basic YWxleGdyb3ZlckBtaWNyb3NvZnQuY29tOnRneXVaOG9WalhlM2NQaWtVcXQyRjk0Mw==']
-        ]
-      })
-      .then((res: HttpClientResponse): Promise<any> => {
-        return res.json();
-      })
-      .then((response: any): void => {
-        console.log(response);
-        this.setState({
-          issueCount: response.issues.length
-        })
-      })
+
+    // const requestHeaders: Headers = new Headers();
+    // requestHeaders.append('Content-type', 'application/json');
+
+    // const body: string = JSON.stringify({
+    //   'jiraEmail': this.context.pageContext.user.loginName
+    // });
+
+    // const httpClientOptions: IHttpClientOptions = {
+    //   body: body,
+    //   headers: requestHeaders
+    // };
+
+    return this.context.httpClient
+    .get('https://spfx-ag-jira.azurewebsites.net/api/GetIssuesForUser?jiraEmail=alex.grover@outlook.com', HttpClient.configurations.v1,)
+    //.getClient('00000000-0000-0000-0000-000000000000')
+    // .then(client => client.get('https://spfx-ag-jira.azurewebsites.net/api/GetIssuesForUser?jiraEmail=alex.grover@outlook.com',
+    //   AadHttpClient.configurations.v1))
+    .then(response => response.json())
+    .then(issues => {
+      this.setState({
+        issueCount: issues.openIssueCount
+      });
+    });
   }
 }
