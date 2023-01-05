@@ -1,0 +1,162 @@
+{
+  "type": "AdaptiveCard",
+  "body": [{
+      "type": "Container",
+      "spacing": "Large",
+      "style": "default",
+      "items": [{
+          "type": "ColumnSet",
+          "columns": [{
+            "type": "Column",
+            "width": 75,
+            "items": [{
+              "type": "TextBlock",
+              "text": "${issue.key} | ${issue.title}",
+              "wrap": true,
+              "size": "Medium",
+              "weight": "Bolder"
+            }]
+          }]
+        },
+        {
+          "type": "Container",
+          "items": [{
+              "type": "ColumnSet",
+              "columns": [{
+                  "type": "Column",
+                  "width": 30,
+                  "items": [{
+                    "type": "TextBlock",
+                    "text": "Created by",
+                    "wrap": true,
+                    "weight": "Bolder"
+                  }]
+                },
+                {
+                  "type": "Column",
+                  "width": 70,
+                  "items": [{
+                    "type": "ColumnSet",
+                    "columns": [{
+                        "type": "Column",
+                        "width": "32px",
+                        "items": [{
+                          "type": "Image",
+                          "url": "${issue.reporter.avatarUri}"
+                        }]
+                      },
+                      {
+                        "type": "Column",
+                        "width": "stretch",
+                        "items": [{
+                          "type": "TextBlock",
+                          "text": "${issue.reporter.name}",
+                          "wrap": true
+                        }],
+                        "verticalContentAlignment": "Center"
+                      }
+                    ],
+                    "spacing": "Medium"
+                  }]
+                }
+              ]
+            },
+            {
+              "type": "ColumnSet",
+              "columns": [{
+                  "type": "Column",
+                  "width": 30,
+                  "items": [{
+                    "type": "TextBlock",
+                    "text": "Opened",
+                    "wrap": true,
+                    "weight": "Bolder"
+                  }]
+                },
+                {
+                  "type": "Column",
+                  "width": 70,
+                  "items": [{
+                    "type": "TextBlock",
+                    "text": "{{DATE(${issue.created},COMPACT)}}",
+                    "wrap": true,
+                    "size": "Default",
+                    "isSubtle": false,
+                    "color": "${if(issue.overDueDays != '', 'attention','Default')}",
+                    "weight": "Bolder"
+                  }]
+                }
+              ],
+              "spacing": "Large"
+            },
+            {
+              "type": "ColumnSet",
+              "columns": [{
+                  "type": "Column",
+                  "width": 30,
+                  "items": [{
+                    "type": "TextBlock",
+                    "text": "Description",
+                    "wrap": true,
+                    "weight": "Bolder"
+                  }]
+                },
+                {
+                  "type": "Column",
+                  "items": [{
+                    "type": "TextBlock",
+                    "text": "${issue.description}",
+                    "wrap": true,
+                    "spacing": "Medium"
+                  }],
+                  "width": 70
+                }
+              ],
+              "spacing": "Large"
+            }
+          ],
+          "spacing": "Large"
+        }
+
+      ]
+    },
+    {
+      "type": "ColumnSet",
+      "columns": [{
+          "type": "Column",
+          "width": 30,
+          "items": [{
+            "type": "TextBlock",
+            "text": "Location",
+            "wrap": true,
+            "weight": "Bolder"
+          }]
+        },
+        {
+          "type": "Column",
+          "width": 70,
+          "items": [{
+            "type": "TextBlock",
+            "text": "${issue.reporter.timeZone}",
+            "wrap": true
+          }]
+        }
+      ],
+      "spacing": "Large"
+    },
+    {
+      "type": "ActionSet",
+      "actions": [{
+        "type": "Action.Submit",
+        "title": "View Jira issue",
+        "data": {
+          "id": "close",
+          "issue": "${issue}"
+        }
+      }],
+      "spacing": "Large"
+    }
+  ],
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "version": "1.3"
+}

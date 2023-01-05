@@ -5,6 +5,7 @@ import { QuickView } from './quickView/QuickView';
 import { HelloJiraPropertyPane } from './HelloJiraPropertyPane';
 import { HttpClient, HttpClientResponse, AadHttpClient, IHttpClientOptions } from '@microsoft/sp-http';
 import { IJiraIssue } from './models/IJiraIssue';
+import { DetailedQuickView } from './quickView/DetailedQuickView';
 
 export interface IHelloJiraAdaptiveCardExtensionProps {
   title: string;
@@ -16,10 +17,12 @@ export interface IHelloJiraAdaptiveCardExtensionState {
   issueCount: number;
   assignedJiraIssues: IJiraIssue[]
   reportedJiraIssues: IJiraIssue[]
+  currentIssueKey: string;
 }
 
 const CARD_VIEW_REGISTRY_ID: string = 'HelloJira_CARD_VIEW';
 export const QUICK_VIEW_REGISTRY_ID: string = 'HelloJira_QUICK_VIEW';
+export const DETAILED_VIEW_REGISTRY_ID: string = 'HelloJira_DETAILED_VIEW'
 
 export default class HelloJiraAdaptiveCardExtension extends BaseAdaptiveCardExtension<
   IHelloJiraAdaptiveCardExtensionProps,
@@ -32,7 +35,8 @@ export default class HelloJiraAdaptiveCardExtension extends BaseAdaptiveCardExte
     this.state = { 
       issueCount: 0,
       assignedJiraIssues: [],
-      reportedJiraIssues: []
+      reportedJiraIssues: [],
+      currentIssueKey: ""
     };
 
     // call search to get issues
@@ -41,6 +45,7 @@ export default class HelloJiraAdaptiveCardExtension extends BaseAdaptiveCardExte
 
     this.cardNavigator.register(CARD_VIEW_REGISTRY_ID, () => new CardView());
     this.quickViewNavigator.register(QUICK_VIEW_REGISTRY_ID, () => new QuickView());
+    this.quickViewNavigator.register(DETAILED_VIEW_REGISTRY_ID, () => new DetailedQuickView());
 
     return this._getIssuesFromJira();
   }

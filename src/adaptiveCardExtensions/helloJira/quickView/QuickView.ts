@@ -1,6 +1,6 @@
-import { ISPFxAdaptiveCard, BaseAdaptiveCardView } from '@microsoft/sp-adaptive-card-extension-base';
+import { ISPFxAdaptiveCard, BaseAdaptiveCardView, IActionArguments, ISubmitActionArguments } from '@microsoft/sp-adaptive-card-extension-base';
 import * as strings from 'HelloJiraAdaptiveCardExtensionStrings';
-import { IHelloJiraAdaptiveCardExtensionProps, IHelloJiraAdaptiveCardExtensionState } from '../HelloJiraAdaptiveCardExtension';
+import { DETAILED_VIEW_REGISTRY_ID, IHelloJiraAdaptiveCardExtensionProps, IHelloJiraAdaptiveCardExtensionState } from '../HelloJiraAdaptiveCardExtension';
 import { IJiraIssue } from '../models/IJiraIssue';
 
 export interface IQuickViewData {
@@ -29,6 +29,17 @@ export class QuickView extends BaseAdaptiveCardView<
   }
 
   public get template(): ISPFxAdaptiveCard {
-    return require('./template/ServiceDeskTemplate.json');
+    return require('./template/JirraIssueSummaryTemplate.json');
+  }
+
+  public async onAction(action: IActionArguments): Promise<void> {
+    if ((<ISubmitActionArguments>action).type === 'Submit') {
+      const submitAction = <ISubmitActionArguments>action;
+      const { id, issueKey } = submitAction.data;
+      if (id === 'selectIssue') {
+        this.setState({ currentIssueKey: issueKey });
+        this.quickViewNavigator.push(DETAILED_VIEW_REGISTRY_ID);
+      }
+    }
   }
 }

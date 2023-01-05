@@ -42,7 +42,7 @@
                 },
                 {
                   "type": "TextBlock",
-                  "text": "${id} ${title}",
+                  "text": "${key} | ${title}",
                   "wrap": true,
                   "size": "Medium",
                   "weight": "Bolder"
@@ -96,8 +96,8 @@
             "type": "Action.Submit",
             "associatedInputs": "none",
             "data": {
-              "id": "selectTicket",
-              "incidentNumber": "${id}"
+              "id": "selectIssue",
+              "incidentNumber": "${key}"
             }
           }
   
