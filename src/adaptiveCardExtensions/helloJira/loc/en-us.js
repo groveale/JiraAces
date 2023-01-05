@@ -1,11 +1,16 @@
 define([], function() {
   return {
-    "PropertyPaneDescription": "Write 1-3 sentences describing the functionality of this component.",
-    "TitleFieldLabel": "Card title",
-    "Title": "Adaptive Card Extension",
-    "SubTitle": "Quick view",
-    "PrimaryText": "Your issues",
-    "Description": "Create your SPFx Adaptive Card Extension solution!",
-    "QuickViewButton": "Quick view"
+    "PropertyPaneDescription": "Sample for showing connection to JIRA API.",
+    "GroupName": "Configuration",
+    "TitleFieldLabel": "Card Title",
+    "IconPropertyFieldLabel": "Card Icon",
+    "QuickViewButtonText":"View my issues",
+    "CardViewTextSingular":"issue pending",
+    "CardViewTextPlural":"issues pending",
+    "CardViewNoTasks":"You currently have no issues pending",
+    "CardViewDescription":"Get up to date with your issues.",
+    "QuickViewDescription": "Review the following outstanding Jira issues assigned to you.",
+    "OpenedLabel": "Opened",
+    "OverdueLabel": "days overdue"
   }
 });

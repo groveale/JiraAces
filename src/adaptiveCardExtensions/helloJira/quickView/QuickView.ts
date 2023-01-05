@@ -1,10 +1,12 @@
 import { ISPFxAdaptiveCard, BaseAdaptiveCardView } from '@microsoft/sp-adaptive-card-extension-base';
 import * as strings from 'HelloJiraAdaptiveCardExtensionStrings';
 import { IHelloJiraAdaptiveCardExtensionProps, IHelloJiraAdaptiveCardExtensionState } from '../HelloJiraAdaptiveCardExtension';
+import { IJiraIssue } from '../models/IJiraIssue';
 
 export interface IQuickViewData {
-  subTitle: string;
-  title: string;
+  numberOfTasks: string;
+  issues: IJiraIssue[];
+  strings: IHelloJiraAdaptiveCardExtensionStrings;
 }
 
 export class QuickView extends BaseAdaptiveCardView<
@@ -13,13 +15,20 @@ export class QuickView extends BaseAdaptiveCardView<
   IQuickViewData
 > {
   public get data(): IQuickViewData {
+    let numberOfTasks: string = strings.CardViewNoTasks;
+    if (this.state.assignedJiraIssues.length > 1) {
+      numberOfTasks = `${this.state.assignedJiraIssues.length.toString()} ${strings.CardViewTextPlural}`;
+    } else {
+      numberOfTasks = `${this.state.assignedJiraIssues.length.toString()} ${strings.CardViewTextSingular}`;
+    }
     return {
-      subTitle: strings.SubTitle,
-      title: strings.Title
+      numberOfTasks: numberOfTasks,
+      issues: this.state.assignedJiraIssues,
+      strings: strings,
     };
   }
 
   public get template(): ISPFxAdaptiveCard {
-    return require('./template/QuickViewTemplate.json');
+    return require('./template/ServiceDeskTemplate.json');
   }
 }

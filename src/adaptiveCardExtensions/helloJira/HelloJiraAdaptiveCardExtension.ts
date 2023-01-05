@@ -4,13 +4,18 @@ import { CardView } from './cardView/CardView';
 import { QuickView } from './quickView/QuickView';
 import { HelloJiraPropertyPane } from './HelloJiraPropertyPane';
 import { HttpClient, HttpClientResponse, AadHttpClient, IHttpClientOptions } from '@microsoft/sp-http';
+import { IJiraIssue } from './models/IJiraIssue';
 
 export interface IHelloJiraAdaptiveCardExtensionProps {
   title: string;
+  // aadAPIURL: string;
+  // aadClientId: string;
 }
 
 export interface IHelloJiraAdaptiveCardExtensionState {
   issueCount: number;
+  assignedJiraIssues: IJiraIssue[]
+  reportedJiraIssues: IJiraIssue[]
 }
 
 const CARD_VIEW_REGISTRY_ID: string = 'HelloJira_CARD_VIEW';
@@ -25,7 +30,9 @@ export default class HelloJiraAdaptiveCardExtension extends BaseAdaptiveCardExte
 
   public onInit(): Promise<void> {
     this.state = { 
-      issueCount: 0
+      issueCount: 0,
+      assignedJiraIssues: [],
+      reportedJiraIssues: []
     };
 
     // call search to get issues
@@ -73,14 +80,16 @@ export default class HelloJiraAdaptiveCardExtension extends BaseAdaptiveCardExte
     // };
 
     return this.context.httpClient
-    .get('https://spfx-ag-jira.azurewebsites.net/api/GetIssuesForUser?jiraEmail=alex.grover@outlook.com', HttpClient.configurations.v1,)
+    .get('https://spfx-ag-jira.azurewebsites.net/api/GetIssuesForUser?jiraEmail=alexgrover@microsoft.com', HttpClient.configurations.v1,)
     //.getClient('00000000-0000-0000-0000-000000000000')
     // .then(client => client.get('https://spfx-ag-jira.azurewebsites.net/api/GetIssuesForUser?jiraEmail=alex.grover@outlook.com',
     //   AadHttpClient.configurations.v1))
     .then(response => response.json())
     .then(issues => {
       this.setState({
-        issueCount: issues.openIssueCount
+        issueCount: issues.openIssueCount,
+        assignedJiraIssues: issues.assigned,
+        reportedJiraIssues: issues.reported
       });
     });
   }

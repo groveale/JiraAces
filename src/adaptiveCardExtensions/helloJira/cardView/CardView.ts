@@ -12,7 +12,7 @@ export class CardView extends BasePrimaryTextCardView<IHelloJiraAdaptiveCardExte
   public get cardButtons(): [ICardButton] | [ICardButton, ICardButton] | undefined {
     return [
       {
-        title: strings.QuickViewButton,
+        title: strings.QuickViewButtonText,
         action: {
           type: 'QuickView',
           parameters: {
@@ -24,18 +24,24 @@ export class CardView extends BasePrimaryTextCardView<IHelloJiraAdaptiveCardExte
   }
 
   public get data(): IPrimaryTextCardParameters {
+    let primaryText: string = strings.CardViewNoTasks;
+    if (this.state.assignedJiraIssues.length > 1) {
+      primaryText = `${this.state.assignedJiraIssues.length.toString()} ${strings.CardViewTextPlural}`;
+    } else {
+      primaryText = `${this.state.assignedJiraIssues.length.toString()} ${strings.CardViewTextSingular}`;
+    }
     return {
-      primaryText: strings.PrimaryText,
-      description: this.state.issueCount.toString(),
+      primaryText: primaryText,
+      description: strings.CardViewDescription,
       title: this.properties.title
     };
   }
 
   public get onCardSelection(): IQuickViewCardAction | IExternalLinkCardAction | undefined {
     return {
-      type: 'ExternalLink',
+      type: 'QuickView',
       parameters: {
-        target: 'https://www.bing.com'
+        view: QUICK_VIEW_REGISTRY_ID
       }
     };
   }
