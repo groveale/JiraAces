@@ -38,15 +38,22 @@
                   "size": "Small",
   
                   "weight": "Bolder",
-                  "color": "${if(overdue == true, 'attention','Default')}"
+                  "color": "${if(overDueDays != '', 'attention','Default')}"
                 },
                 {
                   "type": "TextBlock",
-                  "text": "${id} ${statusText}",
+                  "text": "${id} ${title}",
                   "wrap": true,
                   "size": "Medium",
                   "weight": "Bolder"
                 },
+                {
+                    "type": "TextBlock",
+                    "text": "${statusText}",
+                    "wrap": true,
+                    "size": "small",
+                    "weight": "Bolder"
+                  },
                 {
                   "type": "ColumnSet",
                   "columns": [{
