@@ -15,8 +15,11 @@ export class DetailedQuickView extends BaseAdaptiveCardView<
     IDetailedQuickViewData
 > {
   public get data(): IDetailedQuickViewData {
+    const jiraIssue = this.state.assignedJiraIssues.filter((issue) => {
+        return issue.key === this.state.currentIssueKey;
+      });
     return {
-      issue: this.state.assignedJiraIssues[0],
+      issue: jiraIssue[0],
       strings: strings,
     };
   }

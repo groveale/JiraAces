@@ -97,7 +97,7 @@
             "associatedInputs": "none",
             "data": {
               "id": "selectIssue",
-              "incidentNumber": "${key}"
+              "issueKey": "${key}"
             }
           }
   
